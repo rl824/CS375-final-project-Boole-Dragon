@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Comparison Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛒 Price Comparison Dashboard</h1>
+            <p class="subtitle">Find the best prices with verified, working links</p>
+        </header>
+
+        <div class="search-section">
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Enter product name (e.g., laptop, headphones, coffee maker)"
+                    autocomplete="off"
+                />
+                <button id="searchBtn" onclick="searchProducts()">
+                    <span id="searchBtnText">Search</span>
+                    <span id="searchBtnLoader" class="loader" style="display: none;"></span>
+                </button>
+            </div>
+        </div>
+
+        <div id="resultsSection" class="results-section" style="display: none;">
+            <div class="results-header">
+                <h2>Search Results</h2>
+                <div class="results-stats">
+                    <span id="totalResults" class="stat-badge"></span>
+                    <span id="verifiedResults" class="stat-badge verified"></span>
+                </div>
+            </div>
+
+            <div id="bestDeal" class="best-deal-section" style="display: none;">
+                <div class="best-deal-banner">
+                    <span class="trophy">🏆</span>
+                    <h3>Best Deal Found</h3>
+                </div>
+                <div id="bestDealContent" class="best-deal-content"></div>
+            </div>
+
+            <div id="resultsContainer" class="results-container"></div>
+        </div>
+
+        <div id="errorSection" class="error-section" style="display: none;">
+            <div class="error-message">
+                <span class="error-icon">⚠️</span>
+                <p id="errorMessage"></p>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>About This Dashboard</h3>
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="info-icon">🔍</div>
+                    <h4>Smart Search</h4>
+                    <p>Search across multiple retailers to find the best prices</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">✅</div>
+                    <h4>Link Verification</h4>
+                    <p>Every link is automatically verified to ensure it works</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🎯</div>
+                    <h4>Best Deals</h4>
+                    <p>Instantly see the best verified deal highlighted</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Search functionality
+        async function searchProducts() {
+            const searchInput = document.getElementById('searchInput');
+            const query = searchInput.value.trim();
+            
+            if (!query) {
+                showError('Please enter a product name to search');
+                return;
+            }
+
+            // Show loading state
+            setLoadingState(true);
+            hideError();
+            hideResults();
+
+            try {
+                const response = await fetch('/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: query })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    showError(data.error);
+                } else {
+                    displayResults(data);
+                }
+            } catch (error) {
+                showError('An error occurred while searching. Please try again.');
+                console.error('Search error:', error);
+            } finally {
+                setLoadingState(false);
+            }
+        }
+
+        // Display search results
+        function displayResults(data) {
+            const resultsSection = document.getElementById('resultsSection');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const bestDealSection = document.getElementById('bestDeal');
+            const bestDealContent = document.getElementById('bestDealContent');
+            
+            // Update stats
+            document.getElementById('totalResults').textContent = 
+                `${data.total_results} results found`;
+            document.getElementById('verifiedResults').textContent = 
+                `${data.verified_results} verified links`;
+
+            // Display best deal if available
+            if (data.best_deal) {
+                bestDealContent.innerHTML = createProductCard(data.best_deal, true);
+                bestDealSection.style.display = 'block';
+            } else {
+                bestDealSection.style.display = 'none';
+            }
+
+            // Display all results
+            resultsContainer.innerHTML = data.results
+                .map(result => createProductCard(result, false))
+                .join('');
+
+            resultsSection.style.display = 'block';
+        }
+
+        // Create product card HTML
+        function createProductCard(result, isBestDeal) {
+            const verifiedBadge = result.verified 
+                ? '<span class="badge verified">✓ Verified Link</span>' 
+                : '<span class="badge unverified">✗ Unverified</span>';
+            
+            const price = result.price !== 'N/A' 
+                ? `<span class="price">$${result.price}</span>`
+                : '<span class="price unavailable">Price unavailable</span>';
+
+            const bestDealBadge = isBestDeal 
+                ? '' 
+                : '';
+
+            return `
+                <div class="product-card ${result.verified ? 'verified' : 'unverified'}">
+                    <div class="product-header">
+                        <h4 class="retailer-name">${result.retailer}</h4>
+                        ${verifiedBadge}
+                    </div>
+                    <p class="product-name">${result.product_name}</p>
+                    <div class="product-footer">
+                        ${price}
+                        <a href="${result.url}" target="_blank" class="product-link" ${!result.verified ? 'onclick="return confirm(\'This link has not been verified. Continue?\')"' : ''}>
+                            View Deal →
+                        </a>
+                    </div>
+                    <div class="verification-info">
+                        <small>🔒 ${result.verification_status}</small>
+                    </div>
+                    <div class="timestamp">
+                        <small>Checked: ${result.timestamp}</small>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show error message
+        function showError(message) {
+            const errorSection = document.getElementById('errorSection');
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorSection.style.display = 'block';
+        }
+
+        // Hide error message
+        function hideError() {
+            document.getElementById('errorSection').style.display = 'none';
+        }
+
+        // Hide results section
+        function hideResults() {
+            document.getElementById('resultsSection').style.display = 'none';
+        }
+
+        // Set loading state
+        function setLoadingState(isLoading) {
+            const searchBtn = document.getElementById('searchBtn');
+            const searchBtnText = document.getElementById('searchBtnText');
+            const searchBtnLoader = document.getElementById('searchBtnLoader');
+            const searchInput = document.getElementById('searchInput');
+
+            if (isLoading) {
+                searchBtn.disabled = true;
+                searchInput.disabled = true;
+                searchBtnText.style.display = 'none';
+                searchBtnLoader.style.display = 'inline-block';
+            } else {
+                searchBtn.disabled = false;
+                searchInput.disabled = false;
+                searchBtnText.style.display = 'inline';
+                searchBtnLoader.style.display = 'none';
+            }
+        }
+
+        // Allow Enter key to trigger search
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchProducts();
+            }
+        });
+    </script>
+</body>
+</html>
