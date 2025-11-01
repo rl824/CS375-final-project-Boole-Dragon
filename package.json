@@ -1,0 +1,15 @@
+{
+  "name": "deal-finder-site",
+  "version": "1.0.0",
+  "description": "A web application to discover and share product deals",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "Boole Dragon",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
