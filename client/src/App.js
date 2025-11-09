@@ -36,14 +36,18 @@ function App() {
             <p>{deal.description}</p>
             <div className="price-info">
               <span className="current-price">${deal.price}</span>
-              <span className="original-price">${deal.originalPrice}</span>
-              <span className="discount">
-                {Math.round((1 - deal.price / deal.originalPrice) * 100)}% OFF
-              </span>
+              {deal.original_price && (
+                <>
+                  <span className="original-price">${deal.original_price}</span>
+                  <span className="discount">
+                    {Math.round((1 - deal.price / deal.original_price) * 100)}% OFF
+                  </span>
+                </>
+              )}
             </div>
             <div className="deal-footer">
               <span className="category">{deal.category}</span>
-              <a href={deal.productUrl} target="_blank" rel="noopener noreferrer">
+              <a href={deal.product_url} target="_blank" rel="noopener noreferrer">
                 View Deal
               </a>
             </div>

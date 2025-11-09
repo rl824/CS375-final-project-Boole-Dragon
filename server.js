@@ -1,6 +1,7 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const deals = require('./data');
+const pool = require('./db');
 const app = express();
 const PORT = 3000;
 
@@ -11,18 +12,29 @@ app.get('/', (req, res) => {
   res.send('<h1>Hello World! 🌍</h1><p>Welcome to Deal Finder Site</p>');
 });
 
-app.get('/api/deals', (req, res) => {
-  res.json(deals);
+app.get('/api/deals', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM deals ORDER BY created_at DESC');
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
-app.get('/api/deals/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const deal = deals.find(d => d.id === id);
+app.get('/api/deals/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query('SELECT * FROM deals WHERE id = $1', [id]);
 
-  if (deal) {
-    res.json(deal);
-  } else {
-    res.status(404).json({ error: 'Deal not found' });
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Deal not found' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
   }
 });
 
