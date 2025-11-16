@@ -1,43 +1,38 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const pool = require('./db');
+const cookieParser = require('cookie-parser');
+const authRoutes = require('./routes/auth');
+const dealsRoutes = require('./routes/deals');
+
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3001',
+  credentials: true,
+}));
+app.use(express.json({ limit: '10mb' }));
+app.use(cookieParser());
 
+// Routes
 app.get('/', (req, res) => {
-  res.send('<h1>Hello World! 🌍</h1><p>Welcome to Deal Finder Site</p>');
+  res.send('<h1>Hello World! 🌍</h1><p>Welcome to Deal Finder Site API</p>');
 });
 
-app.get('/api/deals', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM deals ORDER BY created_at DESC');
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Database error' });
-  }
+app.use('/api/auth', authRoutes);
+app.use('/api/deals', dealsRoutes);
+
+app.use((req, res) => {
+  res.status(404).json({ error: 'Route not found' });
 });
 
-app.get('/api/deals/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await pool.query('SELECT * FROM deals WHERE id = $1', [id]);
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Deal not found' });
-    }
-
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Database error' });
-  }
+app.use((err, req, res, next) => {
+  console.error('Server error:', err);
+  res.status(500).json({ error: 'Internal server error' });
 });
 
 app.listen(PORT, () => {
   console.log(`Server is running! Visit http://localhost:${PORT}`);
+  console.log(`Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:3001'}`);
 });

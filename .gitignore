@@ -9,6 +9,7 @@ yarn-error.log*
 # Environment variables
 .env
 .env.local
+client/.env
 
 # Logs
 *.log
@@ -17,3 +18,9 @@ logs/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Professor's demo files (reference only)
+cs375_demos-main/
+
+# Test files
+cookies.txt

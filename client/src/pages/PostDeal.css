@@ -1,0 +1,80 @@
+.post-deal-container {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: var(--bg-color, #0a0e1a);
+}
+
+.post-deal-card {
+  background: var(--card-bg, #12171f);
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 700px;
+  margin: 0 auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.post-deal-header {
+  margin-bottom: 32px;
+}
+
+.post-deal-header h1 {
+  color: var(--text-primary, #ffffff);
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.post-deal-header p {
+  color: var(--text-secondary, #8b92a7);
+  font-size: 14px;
+}
+
+.post-deal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.post-deal-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.post-deal-form textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+.required {
+  color: #ef4444;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.form-actions .btn {
+  min-width: 120px;
+}
+
+@media (max-width: 600px) {
+  .post-deal-card {
+    padding: 24px;
+  }
+
+  .post-deal-form .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+}
