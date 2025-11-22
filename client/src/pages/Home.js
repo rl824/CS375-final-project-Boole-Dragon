@@ -49,6 +49,7 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [sortBy, setSortBy] = useState('newest');
   const [successMessage, setSuccessMessage] = useState('');
 
   const navigate = useNavigate();
@@ -91,7 +92,7 @@ function Home() {
     return merged;
   }, [deals]);
 
-  const filteredDeals = useMemo(() => {
+  const displayedDeals = useMemo(() => {
     let results = deals;
     if (selectedCategory !== 'All') {
       results = results.filter(deal => deal.category === selectedCategory);
@@ -104,8 +105,27 @@ function Home() {
           .some(value => value.toLowerCase().includes(lower))
       );
     }
+
+    // Sort results
+    results = [...results];
+    switch (sortBy) {
+      case 'price-asc':
+        results.sort((a, b) => Number(a.price) - Number(b.price));
+        break;
+      case 'price-desc':
+        results.sort((a, b) => Number(b.price) - Number(a.price));
+        break;
+      case 'oldest':
+        results.sort((a, b) => new Date(a.postedDate) - new Date(b.postedDate));
+        break;
+      case 'newest':
+      default:
+        results.sort((a, b) => new Date(b.postedDate) - new Date(a.postedDate));
+        break;
+    }
+
     return results;
-  }, [deals, selectedCategory, searchTerm]);
+  }, [deals, selectedCategory, searchTerm, sortBy]);
 
   if (loading) {
     return (
@@ -119,9 +139,18 @@ function Home() {
   return (
     <div className="app-shell">
       <header className="top-bar">
-        <div className="brand">
-          <span className="brand__name">Boole Dragon</span>
+        <div className="brand-section">
+          <div className="brand">
+            <span className="brand__name">Boole Dragon</span>
+          </div>
+          <nav className="main-nav">
+            <button type="button" className="nav-item nav-item--active">Home</button>
+            <button type="button" className="nav-item">Top Deals</button>
+            <button type="button" className="nav-item" onClick={() => user ? navigate('/profile') : navigate('/login')}>Profile</button>
+            <button type="button" className="nav-item" onClick={() => user ? navigate('/settings') : navigate('/login')}>Settings</button>
+          </nav>
         </div>
+        
         <div className="search-input">
           <input
             type="search"
@@ -130,41 +159,15 @@ function Home() {
             onChange={event => setSearchTerm(event.target.value)}
           />
         </div>
+
         <div className="header-actions">
-          {user ? (
-            <>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => navigate('/post-deal')}
-              >
-                Post a deal
-              </button>
-              <div className="user-menu">
-                <span className="username">@{user.username}</span>
-                <button type="button" className="btn btn-ghost btn-sm" onClick={logout}>
-                  Logout
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <button
-                type="button"
-                className="btn btn-ghost"
-                onClick={() => navigate('/login')}
-              >
-                Login
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => navigate('/register')}
-              >
-                Sign Up
-              </button>
-            </>
-          )}
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => navigate('/post-deal')}
+          >
+            Post a deal
+          </button>
         </div>
       </header>
 
@@ -189,7 +192,6 @@ function Home() {
             </button>
           ))}
         </div>
-        <button type="button" className="sort-btn">Sort: Trending</button>
       </section>
 
       <section className="deals-section">
@@ -198,31 +200,38 @@ function Home() {
             <p className="eyebrow">Top Deals</p>
             <span className="subtext">Updated hourly</span>
           </div>
+          <div className="sort-container">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="sort-select"
+              aria-label="Sort deals"
+            >
+              <option value="newest">Sort: Newest</option>
+              <option value="oldest">Sort: Oldest</option>
+              <option value="price-asc">Sort: Price Low</option>
+              <option value="price-desc">Sort: Price High</option>
+            </select>
+          </div>
         </header>
 
         <div className="deal-list">
-          {filteredDeals.length === 0 && (
+          {displayedDeals.length === 0 && (
             <p className="empty-state">No deals found for the selected filters.</p>
           )}
-          {filteredDeals.map(deal => (
+          {displayedDeals.map(deal => (
             <article key={deal.id} className="deal-card">
-              <div className="deal-card__check" aria-hidden="true" />
+              <div className="deal-card__image-placeholder" />
               <div className="deal-card__content">
-                <h3>{deal.title}</h3>
-                {deal.description && <p className="deal-desc">{deal.description}</p>}
+                <h3>{deal.title} — {formatCurrency(deal.price)} ({getRetailerFromUrl(deal.productUrl)})</h3>
                 <div className="deal-meta">
                   <span>{getRetailerFromUrl(deal.productUrl)}</span>
-                  <span>- {timeSince(deal.postedDate)}</span>
-                  {deal.postedBy && <span>- @{deal.postedBy}</span>}
+                  <span>• {timeSince(deal.postedDate)}</span>
+                  {deal.postedBy && <span>• @{deal.postedBy}</span>}
                 </div>
               </div>
               <div className="deal-card__cta">
-                <div className="pricing">
-                  <span className="price-current">{formatCurrency(deal.price)}</span>
-                  {deal.originalPrice && (
-                    <span className="price-original">{formatCurrency(deal.originalPrice)}</span>
-                  )}
-                </div>
+                <button className="btn-icon-circle" aria-label="Save deal" />
                 <a
                   className="btn btn-ghost"
                   href={deal.productUrl}
