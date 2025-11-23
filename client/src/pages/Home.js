@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import LoadingSpinner from '../components/LoadingSpinner';
 import '../App.css';
 
 const STATIC_CATEGORIES = ['All', 'Computers', 'Phones', 'Home', 'Gaming', 'Appliances', 'Fashion', 'More'];
@@ -47,6 +48,7 @@ const timeSince = dateString => {
 function Home() {
   const [deals, setDeals] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('newest');
@@ -54,7 +56,7 @@ function Home() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     // Show success message if redirected from post deal
@@ -69,10 +71,12 @@ function Home() {
   useEffect(() => {
     const fetchDeals = async () => {
       try {
+        setError(null);
         const response = await axios.get('/api/deals');
         setDeals(response.data.map(normalizeDeal));
       } catch (err) {
         console.error('Error fetching deals:', err);
+        setError(err.response?.data?.error || 'Failed to load deals. Please try again.');
       } finally {
         setLoading(false);
       }
@@ -130,8 +134,25 @@ function Home() {
   if (loading) {
     return (
       <div className="app-shell loading-state">
-        <div className="spinner" />
-        <p>Loading deals...</p>
+        <LoadingSpinner message="Loading deals..." size="large" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="app-shell loading-state">
+        <div style={{ textAlign: 'center', maxWidth: '400px' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '16px' }}>😕</div>
+          <h2 style={{ marginBottom: '12px' }}>Oops!</h2>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>{error}</p>
+          <button
+            className="btn btn-primary"
+            onClick={() => window.location.reload()}
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     );
   }
@@ -150,7 +171,7 @@ function Home() {
             <button type="button" className="nav-item" onClick={() => user ? navigate('/settings') : navigate('/login')}>Settings</button>
           </nav>
         </div>
-        
+
         <div className="search-input">
           <input
             type="search"
@@ -221,8 +242,16 @@ function Home() {
           )}
           {displayedDeals.map(deal => (
             <article key={deal.id} className="deal-card">
-              <div className="deal-card__image-placeholder" />
-              <div className="deal-card__content">
+              <div
+                className="deal-card__image-placeholder"
+                onClick={() => navigate(`/deals/${deal.id}`)}
+                style={{ cursor: 'pointer' }}
+              />
+              <div
+                className="deal-card__content"
+                onClick={() => navigate(`/deals/${deal.id}`)}
+                style={{ cursor: 'pointer' }}
+              >
                 <h3>{deal.title} — {formatCurrency(deal.price)} ({getRetailerFromUrl(deal.productUrl)})</h3>
                 <div className="deal-meta">
                   <span>{getRetailerFromUrl(deal.productUrl)}</span>

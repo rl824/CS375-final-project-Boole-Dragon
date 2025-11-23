@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LoadingSpinner from '../components/LoadingSpinner';
 import './PostDeal.css';
 
 function PostDeal() {
@@ -30,6 +31,15 @@ function PostDeal() {
     // Validation
     if (!formData.title || !formData.price || !formData.productUrl) {
       setError('Please fill in all required fields');
+      setLoading(false);
+      return;
+    }
+
+    // URL validation
+    try {
+      new URL(formData.productUrl);
+    } catch {
+      setError('Please enter a valid URL (e.g., https://www.amazon.com/...)');
       setLoading(false);
       return;
     }
@@ -170,7 +180,14 @@ function PostDeal() {
               Cancel
             </button>
             <button type="submit" className="btn btn-primary" disabled={loading}>
-              {loading ? 'Posting...' : 'Post Deal'}
+              {loading ? (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <LoadingSpinner size="small" message="" />
+                  Posting...
+                </span>
+              ) : (
+                'Post Deal'
+              )}
             </button>
           </div>
         </form>

@@ -63,6 +63,52 @@ textarea {
   }
 }
 
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.success-banner {
+  background: linear-gradient(135deg, #29a867 0%, #1b7349 100%);
+  color: white;
+  padding: 16px 24px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(41, 168, 103, 0.3);
+  animation: slideDown 0.3s ease-out;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+}
+
+.success-banner::before {
+  content: '✓';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  font-weight: bold;
+}
+
 .top-bar {
   display: flex;
   align-items: center;
@@ -158,8 +204,20 @@ textarea {
   padding: 10px 24px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: all 0.2s ease;
   font-size: 0.95rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .btn-primary {
@@ -168,8 +226,10 @@ textarea {
   box-shadow: 0 4px 12px rgba(41, 168, 103, 0.25);
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background: var(--accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(41, 168, 103, 0.35);
 }
 
 .btn-ghost {
@@ -284,11 +344,14 @@ textarea {
   border-radius: 12px;
   border: 1px solid #1a261e;
   padding: 16px;
-  transition: border-color 0.2s ease;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.4s ease-out;
 }
 
 .deal-card:hover {
   border-color: #2a3d30;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .deal-card__image-placeholder {
@@ -370,21 +433,104 @@ textarea {
     align-items: stretch;
     gap: 16px;
   }
-  
+
   .brand-section {
     justify-content: space-between;
     width: 100%;
   }
-  
+
+  .main-nav {
+    display: none;
+  }
+
   .search-input {
     max-width: 100%;
     order: 3;
   }
-  
+
   .header-actions {
-    position: absolute;
-    top: 12px;
-    right: 20px;
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .header-actions .btn {
+    flex: 1;
   }
 }
 
+@media (max-width: 768px) {
+  .app-shell {
+    padding: 16px;
+    gap: 20px;
+  }
+
+  .categories-row {
+    margin: 0 -16px;
+    padding: 0 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pill-row {
+    flex-wrap: nowrap;
+    padding-bottom: 8px;
+  }
+
+  .pill {
+    white-space: nowrap;
+  }
+
+  .deal-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .deal-card__image-placeholder {
+    width: 100%;
+    height: 200px;
+  }
+
+  .deal-card__content h3 {
+    font-size: 1.1rem;
+  }
+
+  .deal-card__cta {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .sort-container {
+    width: 100%;
+  }
+
+  .sort-select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-bar {
+    padding: 12px 16px;
+  }
+
+  .brand__name {
+    font-size: 1.1rem;
+  }
+
+  .search-input input {
+    font-size: 16px;
+  }
+
+  .deal-meta {
+    flex-wrap: wrap;
+    gap: 4px 8px;
+  }
+}
