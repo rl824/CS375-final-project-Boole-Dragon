@@ -48,6 +48,9 @@ Deployment instructions for hosting the Boole Deals application on Render.com us
     | `DATABASE_URL` | Paste the **Internal Database URL** from Step 1 |
     | `JWT_SECRET` | A long random string (e.g., `mysecretkey12345`) |
     | `FRONTEND_URL` | `https://<your-app-name>.onrender.com` (You'll know this after creation, or guess it based on the name) |
+    | `SMTP_HOST` | (Optional) Your email provider host (e.g., `smtp.gmail.com`) |
+    | `SMTP_USER` | (Optional) Your email address |
+    | `SMTP_PASS` | (Optional) Your email password or app-specific password |
 
 14. Click **Create Web Service**.
 

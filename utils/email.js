@@ -11,8 +11,19 @@ const createTransporter = () => {
   if (process.env.NODE_ENV === 'production') {
     // Production email configuration
     if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      console.warn('WARNING: Email service not configured for production');
-      return null;
+      console.warn('WARNING: Email service not configured for production. Emails will be logged to console instead.');
+      // Return a mock transporter that logs to console
+      return {
+        sendMail: async (opts) => {
+          console.log('----------------------------------------------------');
+          console.log('PRODUCTION MOCK EMAIL (Service not configured)');
+          console.log('To:', opts.to);
+          console.log('Subject:', opts.subject);
+          console.log('Content:', opts.html || opts.text);
+          console.log('----------------------------------------------------');
+          return { messageId: 'mock-production-id-' + Date.now() };
+        }
+      };
     }
 
     return nodemailer.createTransport({
