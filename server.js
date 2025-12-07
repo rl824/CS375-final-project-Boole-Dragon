@@ -11,6 +11,9 @@ const dealsRoutes = require('./routes/deals');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy for Render deployment
+app.set('trust proxy', 1);
+
 // Security Middleware
 app.use(helmet({
   contentSecurityPolicy: false, // Disabled for simplicity with external images/scripts in this project
