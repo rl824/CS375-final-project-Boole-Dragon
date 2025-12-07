@@ -397,22 +397,11 @@ textarea {
 .deal-card:active {
   transform: scale(0.99);
 }
-  border: 1px solid #1a261e;
-  padding: 16px;
-  transition: all 0.3s ease;
-  animation: fadeIn 0.4s ease-out;
-}
-
-.deal-card:hover {
-  border-color: #2a3d30;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
 
 .deal-card__image-placeholder {
   width: 64px;
   height: 64px;
-  background: #1a261e;
+  background: var(--surface-elevated);
   border-radius: 8px;
   flex-shrink: 0;
 }
@@ -449,7 +438,7 @@ textarea {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1px solid #2a3d30;
+  border: 1px solid var(--border);
   background: transparent;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -467,7 +456,7 @@ textarea {
   gap: 12px;
   color: var(--text-muted);
   font-size: 0.9rem;
-  border-top: 1px solid #0f1c12;
+  border-top: 1px solid var(--border);
 }
 
 .site-footer a {
