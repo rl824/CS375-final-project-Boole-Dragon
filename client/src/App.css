@@ -1,4 +1,5 @@
 :root {
+  /* Dark Theme (Default) */
   --bg: #050e07;
   --surface: #0d1510;
   --surface-elevated: #111c15;
@@ -12,7 +13,23 @@
   --pill-active-bg: rgba(41, 168, 103, 0.15);
   --radius-lg: 20px;
   --radius-md: 14px;
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.3);
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+[data-theme='light'] {
+  --bg: #f8f9fa;
+  --surface: #ffffff;
+  --surface-elevated: #f1f3f5;
+  --surface-card: #ffffff;
+  --border: #e9ecef;
+  --text: #212529;
+  --text-muted: #6c757d;
+  --accent: #29a867;
+  --accent-dark: #1b7349;
+  --pill-bg: #e9ecef;
+  --pill-active-bg: rgba(41, 168, 103, 0.1);
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 * {

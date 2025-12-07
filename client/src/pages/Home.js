@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import '../App.css';
 
@@ -57,6 +58,7 @@ function Home() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     // Show success message if redirected from post deal
@@ -182,8 +184,16 @@ function Home() {
             onChange={event => setSearchTerm(event.target.value)}
           />
         </div>
-
         <div className="header-actions">
+          <button
+            type="button"
+            className="btn btn-ghost"
+            onClick={toggleTheme}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            style={{ marginRight: '8px', fontSize: '1.2rem' }}
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
           <button
             type="button"
             className="btn btn-primary"
@@ -191,6 +201,7 @@ function Home() {
           >
             Post a deal
           </button>
+        </div>
         </div>
       </header>
 

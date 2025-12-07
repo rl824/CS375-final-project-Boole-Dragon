@@ -4,16 +4,17 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: var(--bg-color, #0a0e1a);
+  background: var(--bg);
 }
 
 .auth-card {
-  background: var(--card-bg, #12171f);
+  background: var(--surface-card);
   border-radius: 12px;
   padding: 40px;
   max-width: 450px;
   width: 100%;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border);
 }
 
 .auth-header {
@@ -22,13 +23,13 @@
 }
 
 .auth-header h1 {
-  color: var(--text-primary, #ffffff);
+  color: var(--text);
   font-size: 28px;
   margin-bottom: 8px;
 }
 
 .auth-header p {
-  color: var(--text-secondary, #8b92a7);
+  color: var(--text-muted);
   font-size: 14px;
 }
 
@@ -45,7 +46,7 @@
 }
 
 .form-group label {
-  color: var(--text-primary, #ffffff);
+  color: var(--text);
   font-size: 14px;
   font-weight: 500;
 }
@@ -53,10 +54,10 @@
 .form-group input,
 .form-group textarea,
 .form-group select {
-  background: var(--input-bg, #1a1f2e);
-  border: 1px solid var(--border-color, #2a3142);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
   border-radius: 6px;
-  color: var(--text-primary, #ffffff);
+  color: var(--text);
   padding: 12px 16px;
   font-size: 14px;
   transition: all 0.2s;
@@ -66,13 +67,13 @@
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: var(--accent-color, #29a867);
+  border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(41, 168, 103, 0.1);
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-  color: var(--text-tertiary, #5a6478);
+  color: var(--text-muted);
 }
 
 .form-row {
@@ -86,7 +87,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--text-secondary, #8b92a7);
+  color: var(--text-muted);
   font-size: 14px;
   cursor: pointer;
 }
@@ -98,7 +99,7 @@
 }
 
 .link {
-  color: var(--accent-color, #29a867);
+  color: var(--accent);
   text-decoration: none;
   font-size: 14px;
   transition: opacity 0.2s;
@@ -120,7 +121,7 @@
 }
 
 .auth-footer p {
-  color: var(--text-secondary, #8b92a7);
+  color: var(--text-muted);
   font-size: 14px;
 }
 

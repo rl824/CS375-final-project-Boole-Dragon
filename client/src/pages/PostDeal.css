@@ -1,16 +1,17 @@
 .post-deal-container {
   min-height: 100vh;
   padding: 40px 20px;
-  background: var(--bg-color, #0a0e1a);
+  background: var(--bg);
 }
 
 .post-deal-card {
-  background: var(--card-bg, #12171f);
+  background: var(--surface-card);
   border-radius: 12px;
   padding: 40px;
   max-width: 700px;
   margin: 0 auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border);
 }
 
 .post-deal-header {
@@ -18,13 +19,13 @@
 }
 
 .post-deal-header h1 {
-  color: var(--text-primary, #ffffff);
+  color: var(--text);
   font-size: 28px;
   margin-bottom: 8px;
 }
 
 .post-deal-header p {
-  color: var(--text-secondary, #8b92a7);
+  color: var(--text-muted);
   font-size: 14px;
 }
 
