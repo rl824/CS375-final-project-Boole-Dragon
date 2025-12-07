@@ -41,6 +41,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: inherit;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 button,
@@ -53,11 +54,12 @@ textarea {
 
 .app-shell {
   min-height: 100vh;
-  background: radial-gradient(circle at top, rgba(41, 168, 103, 0.12), transparent 40%), var(--bg);
+  background: radial-gradient(circle at top, rgba(41, 168, 103, 0.08), transparent 40%), var(--bg);
   padding: 32px clamp(16px, 4vw, 80px) 64px;
   display: flex;
   flex-direction: column;
   gap: 28px;
+  transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .loading-state {
@@ -77,6 +79,17 @@ textarea {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -134,6 +147,7 @@ textarea {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 12px 20px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .brand-section {
@@ -322,7 +336,6 @@ textarea {
   background-position: right 16px top 50%;
   background-size: 10px auto;
 }
-
 .deals-section {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -331,6 +344,8 @@ textarea {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
 }
 
 .section-header .eyebrow {
@@ -342,23 +357,45 @@ textarea {
 
 .subtext {
   color: var(--text-muted);
-  font-size: 0.85rem;
-  margin-top: 4px;
-  display: block;
-}
-
-.deal-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 .deal-card {
   display: flex;
   align-items: center;
   gap: 20px;
   background: var(--surface-card);
   border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 16px;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.2s ease,
+              background-color 0.3s ease;
+  animation: slideUpFade 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Staggered animation for list items */
+.deal-card:nth-child(1) { animation-delay: 0.05s; }
+.deal-card:nth-child(2) { animation-delay: 0.1s; }
+.deal-card:nth-child(3) { animation-delay: 0.15s; }
+.deal-card:nth-child(4) { animation-delay: 0.2s; }
+.deal-card:nth-child(5) { animation-delay: 0.25s; }
+.deal-card:nth-child(6) { animation-delay: 0.3s; }
+.deal-card:nth-child(7) { animation-delay: 0.35s; }
+.deal-card:nth-child(8) { animation-delay: 0.4s; }
+.deal-card:nth-child(9) { animation-delay: 0.45s; }
+.deal-card:nth-child(10) { animation-delay: 0.5s; }
+
+.deal-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--shadow-card);
+}
+
+.deal-card:active {
+  transform: scale(0.99);
+}
   border: 1px solid #1a261e;
   padding: 16px;
   transition: all 0.3s ease;
