@@ -6,8 +6,8 @@ const tokenStorage = {};
 
 const cookieOptions = {
   httpOnly: true,
-  secure: true,
-  sameSite: 'strict'
+  secure: process.env.NODE_ENV === 'production', // Only use secure cookies in production
+  sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax' // Lax is better for local dev
 };
 
 const generateToken = () => {
