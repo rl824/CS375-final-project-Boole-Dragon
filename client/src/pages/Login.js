@@ -36,7 +36,7 @@ function Login() {
       <div className="auth-card">
         <div className="auth-header">
           <h1>Welcome Back</h1>
-          <p>Sign in to your Deal Finder account</p>
+          <p>Sign in to your Boole Deals account</p>
         </div>
 
         {error && (

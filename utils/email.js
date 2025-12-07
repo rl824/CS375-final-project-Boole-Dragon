@@ -49,10 +49,10 @@ const sendVerificationEmail = async (email, username, verificationToken) => {
   const mailOptions = {
     from: EMAIL_FROM,
     to: email,
-    subject: 'Verify Your Email - Deal Finder',
+    subject: 'Verify Your Email - Boole Deals',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #29a867;">Welcome to Deal Finder!</h2>
+        <h2 style="color: #29a867;">Welcome to Boole Deals!</h2>
         <p>Hi ${username},</p>
         <p>Thanks for signing up! Please verify your email address by clicking the button below:</p>
         <div style="text-align: center; margin: 30px 0;">
@@ -96,7 +96,7 @@ const sendPasswordResetEmail = async (email, username, resetToken) => {
   const mailOptions = {
     from: EMAIL_FROM,
     to: email,
-    subject: 'Reset Your Password - Deal Finder',
+    subject: 'Reset Your Password - Boole Deals',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #29a867;">Password Reset Request</h2>

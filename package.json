@@ -1,5 +1,5 @@
 {
-  "name": "deal-finder-site",
+  "name": "boole-deals",
   "version": "1.0.0",
   "description": "A web application to discover and share product deals",
   "main": "server.js",

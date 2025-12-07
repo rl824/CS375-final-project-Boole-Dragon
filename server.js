@@ -52,7 +52,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 } else {
   app.get('/', (req, res) => {
-    res.send('<h1>Hello World! 🌍</h1><p>Welcome to Deal Finder Site API</p>');
+    res.send('<h1>Hello World! 🌍</h1><p>Welcome to Boole Deals API</p>');
   });
 }
 

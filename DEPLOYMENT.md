@@ -1,6 +1,6 @@
 # Deployment Guide (Render.com)
 
-Deployment instructions for hosting the Deal Finder application on Render.com using a managed PostgreSQL database.
+Deployment instructions for hosting the Boole Deals application on Render.com using a managed PostgreSQL database.
 
 ## Prerequisites
 1.  GitHub repository with project code.
@@ -12,7 +12,7 @@ Deployment instructions for hosting the Deal Finder application on Render.com us
 
 1.  Log in to your Render Dashboard.
 2.  Click **New +** and select **PostgreSQL**.
-3.  **Name**: `deal-finder-db` (or similar).
+3.  **Name**: `boole-deals-db` (or similar).
 4.  **Region**: Choose the one closest to you (e.g., Ohio, Oregon, Frankfurt).
 5.  **PostgreSQL Version**: 15 or 16 (default is fine).
 6.  **Instance Type**: Select **Free** (if available) or the cheapest option.
@@ -30,7 +30,7 @@ Deployment instructions for hosting the Deal Finder application on Render.com us
 2.  Click **New +** and select **Web Service**.
 3.  Select **Build and deploy from a Git repository**.
 4.  Connect your GitHub account and select your `CS375-final-project-Boole-Dragon` repository.
-5.  **Name**: `deal-finder-app` (this will determine your URL, e.g., `deal-finder-app.onrender.com`).
+5.  **Name**: `boole-deals-app` (this will determine your URL, e.g., `boole-deals-app.onrender.com`).
 6.  **Region**: Must be the **same region** as your database.
 7.  **Branch**: `main`.
 8.  **Root Directory**: Leave blank (defaults to root).

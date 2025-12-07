@@ -1,4 +1,4 @@
-# Deal Finder
+# Boole Deals
 
 A full-stack web application for discovering and sharing product deals from around the web, featuring user authentication, email verification, and secure deal posting.
 

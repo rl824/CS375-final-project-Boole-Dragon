@@ -52,7 +52,7 @@ function Register() {
       <div className="auth-card">
         <div className="auth-header">
           <h1>Create Account</h1>
-          <p>Join Deal Finder to share and discover amazing deals</p>
+          <p>Join Boole Deals to share and discover amazing deals</p>
         </div>
 
         {error && <div className="error-message">{error}</div>}

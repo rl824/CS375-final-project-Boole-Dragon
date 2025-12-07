@@ -162,7 +162,7 @@ function Home() {
       <header className="top-bar">
         <div className="brand-section">
           <div className="brand">
-            <span className="brand__name">Boole Dragon</span>
+            <span className="brand__name">Boole Deals</span>
           </div>
           <nav className="main-nav">
             <button type="button" className="nav-item nav-item--active">Home</button>
