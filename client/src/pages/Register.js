@@ -50,6 +50,11 @@ function Register() {
   return (
     <div className="auth-container">
       <div className="auth-card">
+        <div style={{ marginBottom: '20px' }}>
+          <Link to="/" style={{ color: '#8b92a7', textDecoration: 'none', fontSize: '14px' }}>
+            &larr; Back to Home
+          </Link>
+        </div>
         <div className="auth-header">
           <h1>Create Account</h1>
           <p>Join Boole Deals to share and discover amazing deals</p>

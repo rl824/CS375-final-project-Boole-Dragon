@@ -34,6 +34,11 @@ function Login() {
   return (
     <div className="auth-container">
       <div className="auth-card">
+        <div style={{ marginBottom: '20px' }}>
+          <Link to="/" style={{ color: '#8b92a7', textDecoration: 'none', fontSize: '14px' }}>
+            &larr; Back to Home
+          </Link>
+        </div>
         <div className="auth-header">
           <h1>Welcome Back</h1>
           <p>Sign in to your Boole Deals account</p>

@@ -56,7 +56,7 @@ function Home() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     // Show success message if redirected from post deal
@@ -165,10 +165,12 @@ function Home() {
             <span className="brand__name">Boole Deals</span>
           </div>
           <nav className="main-nav">
-            <button type="button" className="nav-item nav-item--active">Home</button>
-            <button type="button" className="nav-item">Top Deals</button>
-            <button type="button" className="nav-item" onClick={() => user ? navigate('/profile') : navigate('/login')}>Profile</button>
-            <button type="button" className="nav-item" onClick={() => user ? navigate('/settings') : navigate('/login')}>Settings</button>
+            <button type="button" className="nav-item nav-item--active" onClick={() => navigate('/')}>Home</button>
+            {user ? (
+              <button type="button" className="nav-item" onClick={logout}>Logout ({user.username})</button>
+            ) : (
+              <button type="button" className="nav-item" onClick={() => navigate('/login')}>Login</button>
+            )}
           </nav>
         </div>
 
