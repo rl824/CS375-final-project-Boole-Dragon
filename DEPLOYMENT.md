@@ -79,10 +79,6 @@ Your production database is currently empty. You need to create the tables.
     psql -h <host> -U <user> -d <dbname> -f schema.sql
     ```
     *Or simply paste the contents of `schema.sql` into your SQL client connected to the remote DB.*
-4.  Don't forget to run the migration file too:
-    ```sql
-    -- Run contents of migrations/001_add_auth_fields.sql
-    ```
 
 ---
 
