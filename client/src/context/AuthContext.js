@@ -3,7 +3,9 @@ import axios from 'axios';
 
 const AuthContext = createContext(null);
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+const API_URL = process.env.NODE_ENV === 'production' 
+  ? '' 
+  : (process.env.REACT_APP_API_URL || 'http://localhost:3000');
 
 axios.defaults.baseURL = API_URL;
 axios.defaults.withCredentials = true;
