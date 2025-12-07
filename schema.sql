@@ -1,8 +1,9 @@
-CREATE DATABASE deal_finder;
+-- Drop tables if they exist (for clean reinstall)
+DROP TABLE IF EXISTS deals CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
 
-\c deal_finder;
-
-CREATE TABLE users (
+-- Create users table
+CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   username VARCHAR(50) UNIQUE NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
@@ -20,7 +21,8 @@ CREATE INDEX idx_users_verification_token ON users(verification_token);
 CREATE INDEX idx_users_reset_token ON users(reset_token);
 CREATE INDEX idx_users_email ON users(email);
 
-CREATE TABLE deals (
+-- Create deals table
+CREATE TABLE IF NOT EXISTS deals (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   title VARCHAR(255) NOT NULL,
