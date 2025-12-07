@@ -202,7 +202,6 @@ function Home() {
             Post a deal
           </button>
         </div>
-        </div>
       </header>
 
       {successMessage && (
