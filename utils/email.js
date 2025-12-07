@@ -3,16 +3,10 @@ const nodemailer = require('nodemailer');
 const EMAIL_FROM = process.env.EMAIL_FROM || 'noreply@dealfinder.com';
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3001';
 
-// Create transporter based on environment
 const createTransporter = () => {
-  // In development, use ethereal.email for testing (or configure your SMTP)
-  // In production, use a real email service (SendGrid, AWS SES, etc.)
-
   if (process.env.NODE_ENV === 'production') {
-    // Production email configuration
     if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
       console.warn('WARNING: Email service not configured for production. Emails will be logged to console instead.');
-      // Return a mock transporter that logs to console
       return {
         sendMail: async (opts) => {
           console.log('----------------------------------------------------');

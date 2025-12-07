@@ -11,18 +11,15 @@ const dealsRoutes = require('./routes/deals');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Trust proxy for Render deployment
 app.set('trust proxy', 1);
 
-// Security Middleware
 app.use(helmet({
-  contentSecurityPolicy: false, // Disabled for simplicity with external images/scripts in this project
+  contentSecurityPolicy: false,
 }));
 
-// Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -35,7 +32,6 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 
-// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/deals', dealsRoutes);
 

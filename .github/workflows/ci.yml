@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-client:
+    name: Build Client (React)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: client/package-lock.json
+        
+    - name: Install Client Dependencies
+      working-directory: ./client
+      run: npm ci
+      
+    - name: Build Client
+      working-directory: ./client
+      run: npm run build
+      env:
+        CI: false
+
+  check-server:
+    name: Check Server (Node)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: package-lock.json
+        
+    - name: Install Server Dependencies
+      run: npm ci
