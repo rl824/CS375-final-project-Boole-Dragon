@@ -36,3 +36,12 @@ CREATE TABLE deals (
 CREATE INDEX idx_deals_user_id ON deals(user_id);
 CREATE INDEX idx_deals_category ON deals(category);
 CREATE INDEX idx_deals_created_at ON deals(created_at DESC);
+
+CREATE TABLE sessions (
+  token VARCHAR(255) PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  expires_at TIMESTAMP NOT NULL
+);
+
+CREATE INDEX idx_sessions_expires_at ON sessions(expires_at);

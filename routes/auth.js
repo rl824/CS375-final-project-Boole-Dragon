@@ -97,7 +97,7 @@ router.post('/login', async (req, res) => {
 
     await pool.query('UPDATE users SET last_login = NOW() WHERE id = $1', [user.id]);
 
-    const token = createSession(user.id);
+    const token = await createSession(user.id);
 
     res.cookie('authToken', token, cookieOptions);
 
@@ -116,10 +116,10 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.post('/logout', requireAuth, (req, res) => {
+router.post('/logout', requireAuth, async (req, res) => {
   const token = req.cookies.authToken;
 
-  destroySession(token);
+  await destroySession(token);
 
   res.clearCookie('authToken', cookieOptions);
 
