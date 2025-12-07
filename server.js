@@ -65,14 +65,22 @@ app.use((err, req, res, next) => {
 });
 
 const pool = require('./db');
+const initializeDatabase = require('./init-db');
 
 // Test database connection on startup
-pool.query('SELECT NOW()', (err, res) => {
+pool.query('SELECT NOW()', async (err, res) => {
   if (err) {
     console.error('Database connection failed:', err.message);
     process.exit(1);
   }
   console.log('Database connected successfully');
+  
+  // Initialize database schema
+  try {
+    await initializeDatabase();
+  } catch (error) {
+    console.error('Failed to initialize database schema:', error.message);
+  }
 });
 
 app.listen(PORT, () => {
