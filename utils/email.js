@@ -1,49 +1,16 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-const EMAIL_FROM = process.env.EMAIL_FROM || 'noreply@dealfinder.com';
+const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev';
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3001';
 
-const createTransporter = () => {
-  if (process.env.NODE_ENV === 'production') {
-    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      console.warn('WARNING: Email service not configured for production. Emails will be logged to console instead.');
-      return {
-        sendMail: async (opts) => {
-          console.log('----------------------------------------------------');
-          console.log('PRODUCTION MOCK EMAIL (Service not configured)');
-          console.log('To:', opts.to);
-          console.log('Subject:', opts.subject);
-          console.log('Content:', opts.html || opts.text);
-          console.log('----------------------------------------------------');
-          return { messageId: 'mock-production-id-' + Date.now() };
-        }
-      };
-    }
+// Initialize Resend client
+const resend = process.env.RESEND_API_KEY 
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 
-    return nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT) || 587,
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
-  } else {
-    // Development: Use ethereal.email or console logging
-    console.log('Development mode: Email will be logged to console');
-    return nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      auth: {
-        user: process.env.SMTP_USER || 'ethereal.user@ethereal.email',
-        pass: process.env.SMTP_PASS || 'ethereal.password',
-      },
-    });
-  }
-};
-
-let transporter = createTransporter();
+if (!resend) {
+  console.warn('WARNING: RESEND_API_KEY not found. Emails will be logged to console instead.');
+}
 
 /**
  * Send verification email
@@ -51,7 +18,7 @@ let transporter = createTransporter();
 const sendVerificationEmail = async (email, username, verificationToken) => {
   const verificationUrl = `${FRONTEND_URL}/verify-email?token=${verificationToken}`;
 
-  const mailOptions = {
+  const emailContent = {
     from: EMAIL_FROM,
     to: email,
     subject: 'Verify Your Email - Boole Deals',
@@ -77,15 +44,25 @@ const sendVerificationEmail = async (email, username, verificationToken) => {
   };
 
   try {
-    if (!transporter) {
-      console.log('Email would be sent:', mailOptions);
+    if (!resend) {
+      console.log('----------------------------------------------------');
+      console.log('MOCK EMAIL (Resend not configured)');
+      console.log('To:', emailContent.to);
+      console.log('Subject:', emailContent.subject);
+      console.log('Verification URL:', verificationUrl);
+      console.log('----------------------------------------------------');
       return { success: false, message: 'Email service not configured' };
     }
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Verification email sent:', info.messageId);
-    console.log('Preview URL:', nodemailer.getTestMessageUrl(info));
-    return { success: true, messageId: info.messageId };
+    const { data, error } = await resend.emails.send(emailContent);
+    
+    if (error) {
+      console.error('Error sending verification email:', error);
+      return { success: false, error: error.message };
+    }
+
+    console.log('Verification email sent successfully:', data.id);
+    return { success: true, messageId: data.id };
   } catch (error) {
     console.error('Error sending verification email:', error);
     return { success: false, error: error.message };
@@ -98,7 +75,7 @@ const sendVerificationEmail = async (email, username, verificationToken) => {
 const sendPasswordResetEmail = async (email, username, resetToken) => {
   const resetUrl = `${FRONTEND_URL}/reset-password?token=${resetToken}`;
 
-  const mailOptions = {
+  const emailContent = {
     from: EMAIL_FROM,
     to: email,
     subject: 'Reset Your Password - Boole Deals',
@@ -125,15 +102,25 @@ const sendPasswordResetEmail = async (email, username, resetToken) => {
   };
 
   try {
-    if (!transporter) {
-      console.log('Email would be sent:', mailOptions);
+    if (!resend) {
+      console.log('----------------------------------------------------');
+      console.log('MOCK EMAIL (Resend not configured)');
+      console.log('To:', emailContent.to);
+      console.log('Subject:', emailContent.subject);
+      console.log('Reset URL:', resetUrl);
+      console.log('----------------------------------------------------');
       return { success: false, message: 'Email service not configured' };
     }
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Password reset email sent:', info.messageId);
-    console.log('Preview URL:', nodemailer.getTestMessageUrl(info));
-    return { success: true, messageId: info.messageId };
+    const { data, error } = await resend.emails.send(emailContent);
+    
+    if (error) {
+      console.error('Error sending password reset email:', error);
+      return { success: false, error: error.message };
+    }
+
+    console.log('Password reset email sent successfully:', data.id);
+    return { success: true, messageId: data.id };
   } catch (error) {
     console.error('Error sending password reset email:', error);
     return { success: false, error: error.message };
