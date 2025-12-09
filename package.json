@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "node server.js",
-    "build": "npm install --prefix client && npm run build --prefix client"
+    "build": "npm install --prefix client && npm run build --prefix client",
+    "seed:showcase": "node run-seed.js"
   },
   "keywords": [],
   "author": "Boole Dragon",
