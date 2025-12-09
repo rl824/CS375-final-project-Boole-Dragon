@@ -88,12 +88,13 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    if (!user.email_verified) {
-      return res.status(403).json({
-        error: 'Please verify your email before logging in',
-        emailVerified: false,
-      });
-    }
+    // Temporarily disabled email verification for development
+    // if (!user.email_verified) {
+    //   return res.status(403).json({
+    //     error: 'Please verify your email before logging in',
+    //     emailVerified: false,
+    //   });
+    // }
 
     await pool.query('UPDATE users SET last_login = NOW() WHERE id = $1', [user.id]);
 
