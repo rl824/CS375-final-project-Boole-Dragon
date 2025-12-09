@@ -35,6 +35,20 @@ app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 app.use('/api/deals', dealsRoutes);
 
+// Temporary route to seed showcase data (since Render Shell is restricted)
+app.get('/api/seed-showcase', async (req, res) => {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const seedSQL = fs.readFileSync(path.join(__dirname, 'seed_showcase.sql'), 'utf8');
+    await pool.query(seedSQL);
+    res.json({ message: 'Showcase data successfully inserted! You can now reload the homepage.' });
+  } catch (error) {
+    console.error('Seed error:', error);
+    res.status(500).json({ error: 'Failed to seed data', details: error.message });
+  }
+});
+
 // API 404 Handler - Ensure API errors return JSON, not HTML
 app.use('/api/*', (req, res) => {
   res.status(404).json({ error: 'API route not found' });
