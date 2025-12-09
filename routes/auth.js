@@ -41,15 +41,16 @@ router.post('/register', async (req, res) => {
       `INSERT INTO users (username, email, password_hash, email_verified, verification_token, verification_token_expires)
        VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING id, username, email, email_verified, created_at`,
-      [username, email, passwordHash, false, verificationToken, verificationExpires]
+      [username, email, passwordHash, true, verificationToken, verificationExpires]
     );
 
     const newUser = result.rows[0];
 
-    await sendVerificationEmail(email, username, verificationToken);
+    // TEMPORARY: Skip email verification for showcase
+    // await sendVerificationEmail(email, username, verificationToken);
 
     res.status(201).json({
-      message: 'Registration successful! Please check your email to verify your account.',
+      message: 'Registration successful! You can now log in.',
       user: {
         id: newUser.id,
         username: newUser.username,
