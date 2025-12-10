@@ -24,6 +24,19 @@ async function initializeDatabase() {
       console.log('✓ Database schema created successfully');
     } else {
       console.log('✓ Database schema already exists');
+      
+      // Migration: Check if image_url column exists in deals table
+      const columnCheck = await pool.query(`
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'deals' AND column_name = 'image_url';
+      `);
+
+      if (columnCheck.rows.length === 0) {
+        console.log('Applying migration: Adding image_url column...');
+        await pool.query('ALTER TABLE deals ADD COLUMN IF NOT EXISTS image_url TEXT;');
+        console.log('✓ Migration successful: image_url column added');
+      }
     }
   } catch (error) {
     console.error('Error initializing database:', error);
