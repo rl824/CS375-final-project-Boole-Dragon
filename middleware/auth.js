@@ -89,7 +89,7 @@ const createSession = async (userId) => {
     'INSERT INTO sessions (token, user_id, expires_at) VALUES ($1, $2, $3)',
     [token, userId, expiresAt]
   );
-  
+
   return token;
 };
 

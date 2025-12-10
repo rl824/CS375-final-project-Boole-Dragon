@@ -258,7 +258,7 @@ function Home() {
               <div
                 className="deal-card__image-placeholder"
                 onClick={() => navigate(`/deals/${deal.id}`)}
-                style={{ 
+                style={{
                   cursor: 'pointer',
                   backgroundImage: deal.imageUrl ? `url(${deal.imageUrl})` : 'none',
                   backgroundSize: 'contain',

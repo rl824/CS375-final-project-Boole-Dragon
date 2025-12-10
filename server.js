@@ -83,7 +83,7 @@ pool.query('SELECT NOW()', async (err, res) => {
     process.exit(1);
   }
   console.log('Database connected successfully');
-  
+
   // Initialize database schema
   try {
     await initializeDatabase();

@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS deals (
   price DECIMAL(10, 2) NOT NULL,
   original_price DECIMAL(10, 2),
   product_url TEXT NOT NULL,
+  image_url TEXT,
   category VARCHAR(100),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

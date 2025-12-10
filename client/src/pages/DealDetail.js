@@ -302,9 +302,9 @@ function DealDetail() {
           </form>
         ) : (
           <div className="deal-content">
-            <div 
-              className="deal-image-placeholder" 
-              style={{ 
+            <div
+              className="deal-image-placeholder"
+              style={{
                 backgroundImage: deal.image_url ? `url(${deal.image_url})` : 'none',
                 backgroundSize: 'contain',
                 backgroundPosition: 'center',

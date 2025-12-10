@@ -4,7 +4,7 @@ const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev';
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3001';
 
 // Initialize Resend client
-const resend = process.env.RESEND_API_KEY 
+const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
@@ -55,7 +55,7 @@ const sendVerificationEmail = async (email, username, verificationToken) => {
     }
 
     const { data, error } = await resend.emails.send(emailContent);
-    
+
     if (error) {
       console.error('Error sending verification email:', error);
       return { success: false, error: error.message };
@@ -113,7 +113,7 @@ const sendPasswordResetEmail = async (email, username, resetToken) => {
     }
 
     const { data, error } = await resend.emails.send(emailContent);
-    
+
     if (error) {
       console.error('Error sending password reset email:', error);
       return { success: false, error: error.message };
