@@ -19,7 +19,7 @@ BEGIN
     -- Insert Showcase Deals
     INSERT INTO deals (user_id, title, description, price, original_price, product_url, image_url, category, created_at)
     VALUES 
-    (demo_user_id, 'LG C3 Series 65-Inch Class OLED evo 4K Processor Smart TV', 'The LG OLED evo C-Series is powered by the a9 AI Processor Gen6—made exclusively for LG OLED—for beautiful picture and performance. The Brightness Booster improves brightness so you get luminous picture and high contrast, even in well-lit rooms.', 1396.99, 2499.99, 'https://www.amazon.com/dp/B0BVXDPZP3', 'https://m.media-amazon.com/images/I/71jG+e7roXL._AC_SL1500_.jpg', 'Electronics', NOW()),
+    (demo_user_id, 'LG C3 Series 65-Inch Class OLED evo 4K Processor Smart TV', 'The LG OLED evo C-Series is powered by the a9 AI Processor Gen6—made exclusively for LG OLED—for beautiful picture and performance. The Brightness Booster improves brightness so you get luminous picture and high contrast, even in well-lit rooms.', 1396.99, 2499.99, 'https://www.amazon.com/dp/B0BVXDPZP3', 'https://m.media-amazon.com/images/I/81I-G58qJBL._AC_SL1500_.jpg', 'Electronics', NOW()),
 
     (demo_user_id, 'Apple MacBook Air 13.6" Laptop - M2 Chip - 8GB Memory - 256GB SSD', 'Redesigned around the next-generation M2 chip, MacBook Air is strikingly thin and brings exceptional speed and power efficiency within its durable all-aluminum enclosure. It is the ultraportable, capable laptop that lets you work, play, or create just about anything — anywhere.', 899.00, 1099.00, 'https://www.bestbuy.com/site/apple-macbook-air-13-6-laptop-m2-chip-8gb-memory-256gb-ssd-midnight/6509650.p', 'https://m.media-amazon.com/images/I/71f5Eu5lJSL._AC_SL1500_.jpg', 'Electronics', NOW() - INTERVAL '2 hours'),
 
