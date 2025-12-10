@@ -87,6 +87,7 @@ function DealDetail() {
         price: response.data.price,
         originalPrice: response.data.original_price || '',
         productUrl: response.data.product_url,
+        imageUrl: response.data.image_url || '',
         category: response.data.category || '',
       });
     } catch (err) {
@@ -112,6 +113,7 @@ function DealDetail() {
         price: parseFloat(editForm.price),
         originalPrice: editForm.originalPrice ? parseFloat(editForm.originalPrice) : null,
         productUrl: editForm.productUrl,
+        imageUrl: editForm.imageUrl,
         category: editForm.category,
       });
 
@@ -258,6 +260,16 @@ function DealDetail() {
             </div>
 
             <div className="form-group">
+              <label>Image URL</label>
+              <input
+                type="url"
+                value={editForm.imageUrl}
+                onChange={(e) => setEditForm({ ...editForm, imageUrl: e.target.value })}
+                placeholder="https://example.com/image.jpg"
+              />
+            </div>
+
+            <div className="form-group">
               <label>Category</label>
               <select
                 value={editForm.category}
@@ -290,7 +302,16 @@ function DealDetail() {
           </form>
         ) : (
           <div className="deal-content">
-            <div className="deal-image-placeholder" />
+            <div 
+              className="deal-image-placeholder" 
+              style={{ 
+                backgroundImage: deal.image_url ? `url(${deal.image_url})` : 'none',
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundColor: deal.image_url ? '#fff' : 'var(--surface-elevated)'
+              }}
+            />
 
             <div className="deal-info">
               <div className="deal-category-badge">

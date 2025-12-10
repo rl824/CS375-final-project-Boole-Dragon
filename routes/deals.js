@@ -13,7 +13,7 @@ router.get('/', optionalAuth, async (req, res) => {
     const result = await pool.query(`
       SELECT
         d.id, d.title, d.description, d.price, d.original_price,
-        d.product_url, d.category, d.created_at, d.updated_at,
+        d.product_url, d.image_url, d.category, d.created_at, d.updated_at,
         u.username as posted_by
       FROM deals d
       LEFT JOIN users u ON d.user_id = u.id
@@ -43,7 +43,7 @@ router.get('/:id', optionalAuth, async (req, res) => {
     const result = await pool.query(`
       SELECT
         d.id, d.title, d.description, d.price, d.original_price,
-        d.product_url, d.category, d.created_at, d.updated_at,
+        d.product_url, d.image_url, d.category, d.created_at, d.updated_at,
         u.username as posted_by, d.user_id
       FROM deals d
       LEFT JOIN users u ON d.user_id = u.id
@@ -67,7 +67,7 @@ router.get('/:id', optionalAuth, async (req, res) => {
  */
 router.post('/', requireAuth, async (req, res) => {
   try {
-    const { title, description, price, originalPrice, productUrl, category } = req.body;
+    const { title, description, price, originalPrice, productUrl, imageUrl, category } = req.body;
     const userId = req.user.id;
 
     // Validation
@@ -101,10 +101,10 @@ router.post('/', requireAuth, async (req, res) => {
 
     // Insert deal
     const result = await pool.query(
-      `INSERT INTO deals (user_id, title, description, price, original_price, product_url, category)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
-       RETURNING id, title, description, price, original_price, product_url, category, created_at`,
-      [userId, title, description || null, priceNum, originalPriceNum, productUrl, category || null]
+      `INSERT INTO deals (user_id, title, description, price, original_price, product_url, image_url, category)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+       RETURNING id, title, description, price, original_price, product_url, image_url, category, created_at`,
+      [userId, title, description || null, priceNum, originalPriceNum, productUrl, imageUrl || null, category || null]
     );
 
     const newDeal = result.rows[0];
@@ -126,7 +126,7 @@ router.post('/', requireAuth, async (req, res) => {
 router.put('/:id', requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, price, originalPrice, productUrl, category } = req.body;
+    const { title, description, price, originalPrice, productUrl, imageUrl, category } = req.body;
     const userId = req.user.id;
 
     // Validate ID
@@ -199,6 +199,10 @@ router.put('/:id', requireAuth, async (req, res) => {
     if (productUrl !== undefined) {
       updates.push(`product_url = $${paramCount++}`);
       values.push(productUrl);
+    }
+    if (imageUrl !== undefined) {
+      updates.push(`image_url = $${paramCount++}`);
+      values.push(imageUrl);
     }
     if (category !== undefined) {
       updates.push(`category = $${paramCount++}`);

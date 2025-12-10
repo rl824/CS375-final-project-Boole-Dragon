@@ -5,6 +5,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const pool = require('./db');
+const initializeDatabase = require('./init-db');
 const authRoutes = require('./routes/auth');
 const dealsRoutes = require('./routes/deals');
 
@@ -73,9 +75,6 @@ app.use((err, req, res, next) => {
   console.error('Server error:', err);
   res.status(500).json({ error: 'Internal server error' });
 });
-
-const pool = require('./db');
-const initializeDatabase = require('./init-db');
 
 // Test database connection on startup
 pool.query('SELECT NOW()', async (err, res) => {

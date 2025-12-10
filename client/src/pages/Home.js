@@ -12,6 +12,7 @@ const normalizeDeal = deal => ({
   ...deal,
   originalPrice: deal.originalPrice ?? deal.original_price ?? deal.list_price ?? deal.price,
   productUrl: deal.productUrl ?? deal.product_url ?? '#',
+  imageUrl: deal.imageUrl ?? deal.image_url ?? null,
   postedBy: deal.postedBy ?? deal.posted_by ?? 'team',
   postedDate: deal.postedDate ?? deal.posted_date ?? deal.created_at,
 });
@@ -257,7 +258,14 @@ function Home() {
               <div
                 className="deal-card__image-placeholder"
                 onClick={() => navigate(`/deals/${deal.id}`)}
-                style={{ cursor: 'pointer' }}
+                style={{ 
+                  cursor: 'pointer',
+                  backgroundImage: deal.imageUrl ? `url(${deal.imageUrl})` : 'none',
+                  backgroundSize: 'contain',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundColor: deal.imageUrl ? '#fff' : 'var(--surface-elevated)'
+                }}
               />
               <div
                 className="deal-card__content"

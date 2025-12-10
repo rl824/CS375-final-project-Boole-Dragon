@@ -11,6 +11,7 @@ function PostDeal() {
     price: '',
     originalPrice: '',
     productUrl: '',
+    imageUrl: '',
     category: '',
   });
   const [error, setError] = useState('');
@@ -51,6 +52,7 @@ function PostDeal() {
         price: parseFloat(formData.price),
         originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : null,
         productUrl: formData.productUrl,
+        imageUrl: formData.imageUrl,
         category: formData.category || null,
       });
 
@@ -147,6 +149,18 @@ function PostDeal() {
               onChange={handleChange}
               required
               placeholder="https://www.amazon.com/..."
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="imageUrl">Image URL</label>
+            <input
+              type="url"
+              id="imageUrl"
+              name="imageUrl"
+              value={formData.imageUrl}
+              onChange={handleChange}
+              placeholder="https://example.com/image.jpg"
             />
           </div>
 
